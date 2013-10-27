@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static 'progress/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+<p>
+	This is the task <strong>{{ task.name }}</strong>, {{ task.description }}.
+</p>
+<p>It has {{ task.portions.count }} portions.</p>
+<a href="{% url "index" %}">Back</a>
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static 'progress/style.css' %}" />
+{% endblock %}
+
+{% block header %}
+<h1>Tags index</h1>
+{% endblock %}
+
+{% block content %}
+<div id="tags">
+	<p>There are {{ tags|length }} tags.</p>
+	<div class="orphaned_tags">
+	{% for tag in orphaned_tags %}
+		<p>Tag <strong>{{ tag.name }}</strong> is not used!</p>
+	{% endfor %}
+	</div>
+	{% for tag in used_tags %}
+	<div class="tag">
+		<p>Tag <a href="">{{ tag.name }}</a></p>
+		{% with related=tag.related %}
+			{% if related %}
+				<p>Related tags are {{ related|join:", "}}</p>
+			{% else %}
+				<p>No related tags.</p>
+			{% endif %}
+		{% endwith %}
+	</div>
+	{% empty %}
+	<p>No tags available.</p>
+	{% endfor %}
+</div>
+{% endblock content %}

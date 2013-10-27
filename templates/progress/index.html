@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load humanize %}
+
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "progress/style.css" %}" />
+{% endblock %}
+
+{% block scripts %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "progress/jquery-2.0.3.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "progress/jquery.cookie.js" %}"></script>
+	<script type="text/javascript" src="{% static "progress/ajax.js" %}"></script>
+{% endblock %}
+
+{% block header %}
+<div class="dashboard">
+	<p>
+		{{ topic_stats.total }} tasks,
+		{{ topic_stats.open }} open,
+		{{ topic_stats.done }} done.
+	</p>
+	<p>
+		Recent work:
+		<ul>
+		{% for activity in recent_activities %}
+			<li>
+				{% if activity.portion %}
+					<span class="dashboard_activity">[Challenge]</span>
+					"{{ activity.description }}" in <a href="">{{ activity.challenge }}</a>
+				{% else %}
+					<span class="dashboard_activity">[Routine]</span>
+					Worked on <a href="">{{ activity.routine }}</a>
+				{% endif %}
+				(<span title="{{ activity.date }}">{{ activity.date|naturaltime }}</span>)
+			</li>
+		{% empty %}
+			<li>Didn't do anything recently.</li>
+		{% endfor %}
+		</ul>
+	</p>
+</div>
+{% endblock %}
+
+{% block content %}
+{% for topic in topics %}
+<div class="topic">
+	<div class="title">
+		<h2 title="Created {{ topic.topic.created_date }}">{{ topic.topic.title }}</h2>
+		<div class="topic_stats">
+			{{ topic.stats.total }} tasks,
+			{{ topic.stats.open }} open,
+			{{ topic.stats.done }} done
+		</div>
+		<div class="topic_create_task">
+			<a href="{% url "create_task" topic.topic.pk %}">Create a new task</a>
+		</div>
+	</div>
+	<div class="tasks">
+	{% for task in topic.tasks %}
+		{% if task.0 %}
+			{% include "progress/_index_challenge.html" with challenge=task.1 %}
+		{% else %}
+			{% include "progress/_index_routine.html" with routine=task.1 %}
+		{% endif %}
+	{% empty %}
+		<p>This topic doesn't have any tasks yet.</p>
+	{% endfor %}
+	</div>
+</div>
+{% empty %}
+<p>No topics available.</p>
+{% endfor %}
+{% endblock %}

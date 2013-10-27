@@ -1,0 +1,21 @@
+{% load humanize %}
+
+<div class="task">
+	<div class="title">
+		<span class="cyclemark">&#x267B;</span>
+		<h3>{{ routine.name }}</h3>
+		<span class="updated" title="{{ routine.updated_date }}">
+			last updated {{ routine.updated_date|naturaltime }}
+		</span>
+	</div>
+	<span class="taskdescription">{{ routine.description }}</span>
+	<input type="hidden" name="task" value="{{ routine.pk }}" />
+	<div class="efforts_bar">
+		Most recent effort {{ routine.efforts.latest.date|naturaltime }}
+	</div>
+	<div class="tags">
+		{% for tag in routine.tags.all %}
+		<span class="tag"><a name="{{ tag.name }}" href="">{{ tag.name }}</a></span>
+		{% endfor %}
+	</div>
+</div>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "progress/style.css" %}" />
+{% endblock %}
+
+{% block header %}
+<div class="title">
+	<h2>Create task</h2>
+	<p>Create a new task in topic {{ topic.title }}.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="mainform">
+	<div class="title">
+		<h2 title="Created {{ topic.created_date }}">{{ topic.title }}</h2>
+		<div class="topic_stats">
+			{{ topic_stats.total }} tasks,
+			{{ topic_stats.open }} open,
+			{{ topic_stats.done }} done
+		</div>
+	</div>
+	<div class="create_form">
+		<form action="{% url "create_task" topic.pk %}" method="post">
+			{% csrf_token %}
+			<table>
+				{% for field in taskform %}
+				<tr>
+					<th>{{ field.label_tag }}:</th>
+					<td>{{ field }}{{ field.errors }}</td>
+				</tr>
+				{% endfor %}
+				<tr>
+					<th><label for="id_bulk_portions">Bulk portions:</label></th>
+					<td>
+						<textarea id="id_bulk_portions" name="bulk_portions" rows="20" cols="80"></textarea>
+					</td>
+				</tr>
+			</table>
+			<input type="submit" id="submit_task" value="Create" />
+		</form>
+	</div>
+</div>
+<a href="{% url "index" %}">Back</a>
+{% endblock %}

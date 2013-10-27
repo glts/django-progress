@@ -1,0 +1,37 @@
+{% load humanize %}
+
+<div class="task {% if not challenge.portions.exists %}invalid{% elif challenge.done %}done{% endif %}">
+	<div class="title">
+		{% if not challenge.portions.exists %}
+			<span class="crossmark">&#x274c;</span>
+		{% elif challenge.done %}
+			<span class="tickmark">&#x2714;</span>
+		{% endif %}
+		<h3>{{ challenge.name }}</h3>
+		<span class="updated" title="{{ challenge.updated_date }}">
+			last updated {{ challenge.updated_date|naturaltime }}
+		</span>
+	</div>
+	<span class="taskdescription">{{ challenge.description }}</span>
+	<input type="hidden" name="task" value="{{ challenge.pk }}" />
+	<div class="portion_bar">
+		<div class="portions">
+			{% for p in challenge.portions.all %}
+				{% if p.done %}
+				<span class="portion done" title="{{ p.description }}" style="width:{{ p.relative_size }}%">
+					<input type="hidden" name="portion" value="{{ p.pk }}" />
+				</span>
+				{% else %}
+				<span class="portion open" title="{{ p.description }}" style="width:{{ p.relative_size }}%">
+					<input type="hidden" name="portion" value="{{ p.pk }}" />
+				</span>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+	<div class="tags">
+		{% for tag in challenge.tags.all %}
+		<span class="tag"><a name="{{ tag.name }}" href="">{{ tag.name }}</a></span>
+		{% endfor %}
+	</div>
+</div>
