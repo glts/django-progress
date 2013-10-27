@@ -60,11 +60,11 @@ class Portion(models.Model):
     done_date = models.DateTimeField(null=True, editable=False)
     size = models.IntegerField(default=1)
 
-    def __str__(self):
-        return '{} [{}]'.format(self.challenge.name, self._order)
-
     class Meta:
         order_with_respect_to = 'challenge'
+
+    def __str__(self):
+        return '{} [{}]'.format(self.challenge.name, self._order)
 
     def save(self, *args, **kwargs):
         was_done = False
@@ -95,9 +95,9 @@ class Effort(models.Model):
     routine = models.ForeignKey(Routine, related_name='efforts')
     date = models.DateTimeField(default=lambda:timezone.now())
 
-    def __str__(self):
-        return '{} {}'.format(self.routine, self.date)
-
     class Meta:
         ordering = ('-date',)
         get_latest_by = 'date'
+
+    def __str__(self):
+        return '{} {}'.format(self.routine, self.date)
