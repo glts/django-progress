@@ -68,7 +68,7 @@ class Portion(models.Model):
 
     def save(self, *args, **kwargs):
         was_done = False
-        if self.pk:
+        if self.pk is not None:
             was_done = Portion.objects.get(pk=self.pk).done
         if self.done and not was_done:
             self.done_date = timezone.now()

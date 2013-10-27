@@ -13,17 +13,18 @@ logger = logging.getLogger(__name__)
 
 
 def task_stats_for_topic(topic=None):
-    """Return the number of "open" and "done" tasks as well as the sum total.
+    """Return basic task stats for a Topic.
 
-    Queries the database to determine these numbers for a given Topic. If no
-    Topic is given the numbers are cumulative for all Tasks in the database.
+    For a given Topic, this returns the number of "open" and "done"
+    tasks, as well as the sum total of tasks. When no Topic is given the
+    numbers are for all Tasks in the database.
     """
-    if topic:
-        manager = topic.tasks
-        lookup = {'topic': topic}
-    else:
+    if topic is None:
         manager = Task.objects
         lookup = {}
+    else:
+        manager = topic.tasks
+        lookup = {'topic': topic}
     return {
         'total': manager.count(),
         'open': len([challenge for challenge in Challenge.objects.filter(**lookup) if not challenge.done()]) + \
