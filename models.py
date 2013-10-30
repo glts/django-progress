@@ -78,16 +78,18 @@ class Portion(models.Model):
 
     def delete(self, *args, **kwargs):
         was_done = self.done
-        siblings = self.challenge.portions.exclude(pk=self.pk)
-        next_in_order = siblings.filter(_order__gt=self._order)
-        # TODO use bulk_update to go around save() logic
-        for i, portion in enumerate(next_in_order):
-            portion._order = self._order + i
-            portion.save()
-        if not was_done and all([portion.done for portion in siblings]):
-            self.challenge.done = True
-            self.challenge.save()
+        challenge = self.challenge
+        siblings = challenge.portions.exclude(pk=self.pk)
+
         super(Portion, self).delete(*args, **kwargs)
+
+        # Update order of following Portions, bypassing Portion.save()
+        for i, portion_id in enumerate(siblings.filter(_order__gt=self._order).values_list('id', flat=True)):
+            Portion.objects.filter(pk=portion_id).update(_order=self._order+i)
+
+        if not was_done and all([portion.done for portion in siblings]):
+            challenge.done = True
+            challenge.save()
 
     def relative_size(self):
         total_size = self.challenge.portions.aggregate(Sum('size'))['size__sum']
