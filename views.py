@@ -27,9 +27,8 @@ def task_stats_for_topic(topic=None):
         lookup = {'topic': topic}
     return {
         'total': manager.count(),
-        'open': len([challenge for challenge in Challenge.objects.filter(**lookup) if not challenge.done()]) + \
-                Routine.objects.filter(**lookup).count(),
-        'done': len(([challenge for challenge in Challenge.objects.filter(**lookup) if challenge.done()])),
+        'open': Challenge.objects.filter(**lookup).filter(done=False).count() + Routine.objects.filter(**lookup).count(),
+        'done': Challenge.objects.filter(**lookup).filter(done=True).count(),
     }
 
 
@@ -61,7 +60,7 @@ def index(request):
                 challenge = task.challenge
                 if not challenge.portions.exists():
                     invalid.append((True, challenge))
-                elif not challenge.done():
+                elif not challenge.done:
                     open.append((True, challenge))
                 else:
                     done.append((True, challenge))

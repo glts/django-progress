@@ -43,10 +43,7 @@ class Task(models.Model):
 
 
 class Challenge(Task):
-
-    def done(self):
-        return self.portions.exists() and all([portion.done for portion in self.portions.all()])
-    done.boolean = True
+    done = models.BooleanField(editable=False, default=False)
 
 
 class Routine(Task):
@@ -76,14 +73,20 @@ class Portion(models.Model):
             self.done_date = None
         super(Portion, self).save(*args, **kwargs)
         self.challenge.updated_date = timezone.now()
+        self.challenge.done = all([portion.done for portion in self.challenge.portions.all()])
         self.challenge.save()
 
     def delete(self, *args, **kwargs):
-        next_in_order = self.challenge.portions.filter(_order__gt=self._order)
-        super(Portion, self).delete(*args, **kwargs)
+        was_done = self.done
+        siblings = self.challenge.portions.exclude(pk=self.pk)
+        if not was_done and all([portion.done for portion in siblings]):
+            self.challenge.done = True
+            self.challenge.save()
+        next_in_order = siblings.filter(_order__gt=self._order)
         for i, portion in enumerate(next_in_order):
             portion._order = self._order + i
             portion.save()
+        super(Portion, self).delete(*args, **kwargs)
 
     def relative_size(self):
         total_size = self.challenge.portions.aggregate(Sum('size'))['size__sum']
