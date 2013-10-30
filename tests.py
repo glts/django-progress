@@ -29,12 +29,36 @@ class PortionTest(TestCase):
                 topic=topic)
         portion = challenge.portions.create(description="Concept finished")
         self.assertIsNone(portion.done_date)
+
         portion.done = True
         t_before = timezone.now()
         portion.save()
         t_after = timezone.now()
         self.assertLess(t_before, portion.done_date)
         self.assertGreater(t_after, portion.done_date)
+
         portion.description = "Concept draft finished"
         portion.save()
         self.assertGreater(t_after, portion.done_date)
+
+    def test_challenge_done(self):
+        topic = Topic.objects.create(title="Vim")
+        challenge = Challenge.objects.create(name="Practical Vim",
+                description="Read the book", topic=topic)
+        self.assertFalse(challenge.done)
+
+        chapter1 = challenge.portions.create(description="Chapter 1")
+        chapter2 = challenge.portions.create(description="Chapter 2", done=True)
+        self.assertFalse(challenge.done)
+
+        chapter1.done = True
+        chapter1.save()
+        self.assertTrue(challenge.done)
+
+        challenge.portions.create(description="Chapter X", done=True)
+        chapter2.done = False
+        chapter2.save()
+        self.assertFalse(challenge.done)
+
+        chapter2.delete()
+        self.assertTrue(challenge.done)

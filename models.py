@@ -79,13 +79,14 @@ class Portion(models.Model):
     def delete(self, *args, **kwargs):
         was_done = self.done
         siblings = self.challenge.portions.exclude(pk=self.pk)
-        if not was_done and all([portion.done for portion in siblings]):
-            self.challenge.done = True
-            self.challenge.save()
         next_in_order = siblings.filter(_order__gt=self._order)
+        # TODO use bulk_update to go around save() logic
         for i, portion in enumerate(next_in_order):
             portion._order = self._order + i
             portion.save()
+        if not was_done and all([portion.done for portion in siblings]):
+            self.challenge.done = True
+            self.challenge.save()
         super(Portion, self).delete(*args, **kwargs)
 
     def relative_size(self):
