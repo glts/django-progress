@@ -53,12 +53,12 @@ class PortionTest(TestCase):
 
         chapter1.done = True
         chapter1.save()
-        self.assertTrue(challenge.done)
+        self.assertTrue(Challenge.objects.get(pk=1).done)   # challenge.done is now stale
 
         challenge.portions.create(description="Chapter X", done=True)
         chapter2.done = False
         chapter2.save()
-        self.assertFalse(challenge.done)
+        self.assertFalse(Challenge.objects.get(pk=1).done)
 
         chapter2.delete()
-        self.assertTrue(Challenge.objects.get(pk=1).done)  # challenge.done is now stale
+        self.assertTrue(Challenge.objects.get(pk=1).done)

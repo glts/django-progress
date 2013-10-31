@@ -75,10 +75,12 @@ class Portion(models.Model):
             self.done_date = timezone.now()
         elif not self.done and was_done:
             self.done_date = None
+
         super().save(*args, **kwargs)
-        self.challenge.updated_date = timezone.now()
-        self.challenge.done = all([portion.done for portion in self.challenge.portions.all()])
-        self.challenge.save()
+
+        all_done = all([portion.done for portion in self.challenge.portions.all()])
+        Challenge.objects.filter(pk=self.challenge.pk).update(done=all_done,
+                                                              updated_date=timezone.now())
 
     def delete(self, *args, **kwargs):
         was_done = self.done
