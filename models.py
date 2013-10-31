@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import F, Sum
+from django.core.urlresolvers import reverse
 from django.utils import timezone
 
 
@@ -9,6 +10,9 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('view_topic', args=[self.pk])
 
     def updated_date(self):
         if self.tasks.exists():

@@ -110,9 +110,14 @@ def create_topic(request):
     return HttpResponse("Not yet implemented: Create topic")
 
 
-def task(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-    return render(request, 'progress/task.html', {'task': task})
+def view_topic(request, topic_id):
+    topic = get_object_or_404(Topic, pk=topic_id)
+    return HttpResponse("Not yet implemented: View topic")
+
+
+def view_task(request, task_id):
+    view_task = get_object_or_404(Task, pk=task_id)
+    return render(request, 'progress/view_task.html', {'task': task})
 
 
 def bulk_lines_to_portions(lines):
