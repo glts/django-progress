@@ -61,4 +61,4 @@ class PortionTest(TestCase):
         self.assertFalse(challenge.done)
 
         chapter2.delete()
-        self.assertTrue(challenge.done)
+        self.assertTrue(Challenge.objects.get(pk=1).done)  # challenge.done is now stale

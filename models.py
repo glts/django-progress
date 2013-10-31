@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum
+from django.db.models import F, Sum
 from django.utils import timezone
 
 
@@ -71,25 +71,22 @@ class Portion(models.Model):
             self.done_date = timezone.now()
         elif not self.done and was_done:
             self.done_date = None
-        super(Portion, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         self.challenge.updated_date = timezone.now()
         self.challenge.done = all([portion.done for portion in self.challenge.portions.all()])
         self.challenge.save()
 
     def delete(self, *args, **kwargs):
         was_done = self.done
-        challenge = self.challenge
-        siblings = challenge.portions.exclude(pk=self.pk)
+        siblings = self.challenge.portions.exclude(pk=self.pk)
 
-        super(Portion, self).delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
         # Update order of following Portions, bypassing Portion.save()
-        for i, portion_id in enumerate(siblings.filter(_order__gt=self._order).values_list('id', flat=True)):
-            Portion.objects.filter(pk=portion_id).update(_order=self._order+i)
+        siblings.filter(_order__gt=self._order).update(_order=F('_order')-1)
 
         if not was_done and all([portion.done for portion in siblings]):
-            challenge.done = True
-            challenge.save()
+            Challenge.objects.filter(pk=self.challenge.pk).update(done=True)
 
     def relative_size(self):
         total_size = self.challenge.portions.aggregate(Sum('size'))['size__sum']
