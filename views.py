@@ -1,3 +1,4 @@
+import json
 import logging
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
@@ -112,11 +113,11 @@ def create_topic(request):
 
 def view_topic(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
-    return HttpResponse("Not yet implemented: View topic")
+    return render(request, 'progress/view_topic.html', {'topic': topic})
 
 
 def view_task(request, task_id):
-    view_task = get_object_or_404(Task, pk=task_id)
+    task = get_object_or_404(Task, pk=task_id)
     return render(request, 'progress/view_task.html', {'task': task})
 
 
@@ -194,4 +195,5 @@ def close_portion(request, task_id, portion_id):
             pass # invalid request
     else:
         pass
-    return HttpResponse()
+    done = False  # TODO
+    return HttpResponse(json.dumps({'challenge': {'done': done}}), content_type='application/json')

@@ -9,8 +9,7 @@
 
 {% block content %}
 <p>
-	This is the task <strong>{{ task.name }}</strong>, {{ task.description }}.
+	This is the topic <strong>{{ topic.name }}</strong>, {{ topic.description }}.
 </p>
-<p>It has {{ task.portions.count }} portions.</p>
 <a href="{% url "index" %}">Back</a>
 {% endblock content %}

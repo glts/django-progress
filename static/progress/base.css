@@ -59,42 +59,8 @@ div.subheader div.title {
 	float: right;
 	width: 78%;
 }
-div.dashboard {
-	float: right;
-	width: 78%;
-}
 div.mainform {
 	width: 100%;
-}
-span.dashboard_activity {
-	font-size: smaller;
-}
-div.task.invalid {
-	background-color: Salmon;
-}
-div.task.done {
-	background-color: #FFCC99;
-}
-span.crossmark {
-	vertical-align: middle;
-	color: red;
-	text-shadow: -1px 0 #660000, 0 1px #660000, 1px 0 #660000, 0 -1px #660000;
-}
-span.tickmark {
-	font-size: 1.6em;
-	vertical-align: middle;
-	color: #33CC00;
-	text-shadow: -1px 0 #006600, 0 1px #006600, 1px 0 #006600, 0 -1px #006600;
-}
-span.cyclemark {
-	font-size: 1.6em;
-	vertical-align: middle;
-	color: orange;
-	text-shadow: -1px 0 #FF4500, 0 1px #FF4500, 1px 0 #FF4500, 0 -1px #FF4500;
-}
-div.topic div.task {
-	padding: 0.5em;
-	border-bottom: 1px solid #000000;
 }
 h1 {
 }
@@ -106,8 +72,12 @@ h2 {
 div.task h3 {
 	display: inline;
 }
-a {
-	font-size: 90%;
+h2 a:link, h2 a:visited, h3 a:link, h3 a:visited {
+	color: black;
+	text-decoration: none;
+}
+h2 a:hover, h3 a:hover {
+	text-decoration: underline;
 }
 a:link, a:visited {
 	color: #CC0000;
@@ -116,39 +86,10 @@ a:link, a:visited {
 a:hover {
 	color: #FF3300;
 }
-div.dashboard li {
-	list-style: none;
-}
 span.updated {
 	color: Grey;
 	font-size: x-small;
 }
-div.portion_bar {
-	display: block;
-	width: 96%;
-	margin-bottom: 10px;
-}
-div.portions {
-	display: block;
-	width: 100%;
-	margin: 0 0 2px;
-}
 div.tags {
 	clear: left;
-}
-span.portion {
-	height: 14px;
-	border-left: 1px solid #A9A9A9;
-	-moz-box-sizing: border-box;
-	display: block;
-	float: left;
-	padding: 0;
-	margin-top: 3px;
-	margin-bottom: 0px;
-}
-span.portion.done {
-	background-color: #33CC00;
-}
-span.portion.open {
-	background-color: #D3D3D3;
 }

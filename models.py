@@ -45,6 +45,9 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('view_task', args=[self.pk])
+
 
 class Challenge(Task):
     done = models.BooleanField(editable=False, default=False)

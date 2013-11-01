@@ -19,8 +19,11 @@ $(function() {
 				jqxhr.setRequestHeader('X-CSRFToken', csrftoken);
 			},
 		})
-		.done(function() {
+		.done(function(data) {
 			portion_div.removeClass('open').addClass('done');
+			if (data.challenge.done) {
+				portion_div.closest('div.task').addClass('done');
+			}
 		})
 		.fail(function() {
 			alert("Ajax request failed");

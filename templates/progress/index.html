@@ -5,7 +5,8 @@
 
 {% block stylesheets %}
 	{{ block.super }}
-	<link rel="stylesheet" type="text/css" href="{% static "progress/style.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "progress/base.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "progress/index.css" %}" />
 {% endblock %}
 
 {% block scripts %}
@@ -48,7 +49,9 @@
 {% for topic in topics %}
 <div class="topic">
 	<div class="title">
-		<h2 title="Created {{ topic.topic.created_date }}">{{ topic.topic.title }}</h2>
+		<h2 title="Created {{ topic.topic.created_date }}">
+			<a href="{{ topic.topic.get_absolute_url }}">{{ topic.topic.title }}</a>
+		</h2>
 		<div class="topic_stats">
 			{{ topic.stats.total }} tasks,
 			{{ topic.stats.open }} open,

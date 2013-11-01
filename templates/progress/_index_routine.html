@@ -3,7 +3,7 @@
 <div class="task">
 	<div class="title">
 		<span class="cyclemark">&#x267B;</span>
-		<h3>{{ routine.name }}</h3>
+		<h3><a href="{{ routine.get_absolute_url }}">{{ routine.name }}</a></h3>
 		<span class="updated" title="{{ routine.updated_date }}">
 			last updated {{ routine.updated_date|naturaltime }}
 		</span>
