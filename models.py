@@ -81,7 +81,7 @@ class Portion(models.Model):
 
         super().save(*args, **kwargs)
 
-        all_done = all([portion.done for portion in self.challenge.portions.all()])
+        all_done = all(portion.done for portion in self.challenge.portions.all())
         Challenge.objects.filter(pk=self.challenge.pk).update(done=all_done,
                                                               updated_date=timezone.now())
 
@@ -94,7 +94,7 @@ class Portion(models.Model):
         # Update order of following Portions, bypassing Portion.save()
         siblings.filter(_order__gt=self._order).update(_order=F('_order')-1)
 
-        if not was_done and all([portion.done for portion in siblings]):
+        if not was_done and all(portion.done for portion in siblings):
             Challenge.objects.filter(pk=self.challenge.pk).update(done=True)
 
     def relative_size(self):
