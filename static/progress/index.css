@@ -7,7 +7,7 @@ span.dashboard_activity {
 }
 div.task.done h3:before {
     content: "\002714\0000a0";
-	font-size: 1.6em;
+	font-size: 1.4em;
 	color: #33CC00;
 	text-shadow: -1px 0 #006600, 0 1px #006600, 1px 0 #006600, 0 -1px #006600;
 }
@@ -16,17 +16,17 @@ div.task.invalid h3:before {
 	color: red;
 	text-shadow: -1px 0 #660000, 0 1px #660000, 1px 0 #660000, 0 -1px #660000;
 }
+div.task.routine h3:before {
+    content: "\00267b\0000a0";
+	font-size: 1.4em;
+	color: orange;
+	text-shadow: -1px 0 #FF4500, 0 1px #FF4500, 1px 0 #FF4500, 0 -1px #FF4500;
+}
 div.task.done {
 	background-color: #FFCC99;
 }
 div.task.invalid {
 	background-color: Salmon;
-}
-span.cyclemark {
-	font-size: 1.6em;
-	vertical-align: middle;
-	color: orange;
-	text-shadow: -1px 0 #FF4500, 0 1px #FF4500, 1px 0 #FF4500, 0 -1px #FF4500;
 }
 div.topic div.task {
 	padding: 0.5em;
