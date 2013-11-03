@@ -21,7 +21,7 @@ class Topic(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('view_topic', args=[self.pk])
+        return reverse('topic_detail', args=[self.pk])
 
     def updated_date(self):
         if self.tasks.exists():
