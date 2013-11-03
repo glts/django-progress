@@ -45,6 +45,11 @@ class Tag(models.Model):
 
 
 class Task(models.Model):
+    """An item of work, can be either a Challenge or a Routine.
+
+    Do not instantiate Tasks directly, a Task must always be created via
+    the Challenge or Routine subclass.
+    """
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     topic = models.ForeignKey(Topic, related_name='tasks')
@@ -113,6 +118,11 @@ class Portion(models.Model):
 
 
 class Effort(models.Model):
+    """A work session, a contribution to a Routine.
+
+    An Effort records the date on which work on a routine task was put
+    in. The accompanying note is optional.
+    """
     note = models.CharField(max_length=200, blank=True)
     routine = models.ForeignKey(Routine, related_name='efforts')
     date = models.DateTimeField(default=lambda:timezone.now())
