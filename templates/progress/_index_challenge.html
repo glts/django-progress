@@ -2,11 +2,6 @@
 
 <div class="task {% if not challenge.portions.exists %}invalid{% elif challenge.done %}done{% endif %}">
 	<div class="title">
-		{% if not challenge.portions.exists %}
-			<span class="crossmark">&#x274c;</span>
-		{% elif challenge.done %}
-			<span class="tickmark">&#x2714;</span>
-		{% endif %}
 		<h3><a href="{{ challenge.get_absolute_url }}">{{ challenge.name }}</a></h3>
 		<span class="updated" title="{{ challenge.updated_date }}">
 			last updated {{ challenge.updated_date|naturaltime }}
