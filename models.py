@@ -5,6 +5,15 @@ from django.utils import timezone
 
 
 class Topic(models.Model):
+    """An area of interest.
+
+    A Topic represents some field of interest and serves as the header
+    to which tasks are assigned. A Topic could be a foreign language or
+    a programming project or a musical instrument.
+
+    >>> topic = Topic(title="Lisp")
+    >>> topic.save()
+    """
     title = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -22,6 +31,7 @@ class Topic(models.Model):
 
 
 class Tag(models.Model):
+    """A label for tasks."""
     name = models.CharField(max_length=30)
 
     def __str__(self):
@@ -35,6 +45,11 @@ class Tag(models.Model):
 
 
 class Task(models.Model):
+    """An item of work, can be either a Challenge or a Routine.
+
+    Do not instantiate Tasks directly, a Task must always be created via
+    the Challenge or Routine subclass.
+    """
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     topic = models.ForeignKey(Topic, related_name='tasks')
@@ -103,6 +118,11 @@ class Portion(models.Model):
 
 
 class Effort(models.Model):
+    """A work session, a contribution to a Routine.
+
+    An Effort records the date on which work on a routine task was put
+    in. The accompanying note is optional.
+    """
     note = models.CharField(max_length=200, blank=True)
     routine = models.ForeignKey(Routine, related_name='efforts')
     date = models.DateTimeField(default=lambda:timezone.now())
