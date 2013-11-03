@@ -7,9 +7,13 @@
 	<link rel="stylesheet" type="text/css" href="{% static "progress/base.css" %}" />
 {% endblock %}
 
+{% block header %}
+<h1>{{ topic.title }}</h1>
+{% endblock %}
+
 {% block content %}
 <p>
-	This is the topic <strong>{{ topic.name }}</strong>, {{ topic.description }}.
+	This is the topic <strong>{{ topic.title }}</strong>.
 </p>
 <a href="{% url "index" %}">Back</a>
 {% endblock content %}
