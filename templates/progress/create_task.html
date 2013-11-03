@@ -25,7 +25,7 @@
 		</div>
 	</div>
 	<div class="create_form">
-		<form action="{% url "create_task" topic.pk %}" method="post">
+		<form method="post">
 			{% csrf_token %}
 			<table>
 				{% for field in taskform %}

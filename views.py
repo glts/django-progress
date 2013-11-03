@@ -1,11 +1,15 @@
 import json
 import logging
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.db import transaction
 from django.db.models import Count, Max
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.csrf import ensure_csrf_cookie
+
 from progress.models import Topic, Task, Challenge, Routine, Portion, Effort, Tag
 from progress.forms import TaskForm, ChallengeForm
 
@@ -107,13 +111,14 @@ def index(request):
     })
 
 
-def create_topic(request):
-    return HttpResponse("Not yet implemented: Create topic")
+class TopicDetailView(DetailView):
+    model = Topic
 
+class TopicCreateView(CreateView):
+    model = Topic
 
-def view_topic(request, topic_id):
-    topic = get_object_or_404(Topic, pk=topic_id)
-    return render(request, 'progress/view_topic.html', {'topic': topic})
+class TopicUpdateView(UpdateView):
+    model = Topic
 
 
 def view_task(request, task_id):
@@ -192,8 +197,8 @@ def close_portion(request, task_id, portion_id):
             portion.done = True
             portion.save()
         else:
-            pass # invalid request
+            return HttpResponseBadRequest()
     else:
-        pass
-    done = False  # TODO
+        return HttpResponseNotAllowed(['POST'])
+    done = Challenge.objects.get(pk=portion.challenge.pk).done
     return HttpResponse(json.dumps({'challenge': {'done': done}}), content_type='application/json')
