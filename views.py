@@ -179,11 +179,11 @@ def edit_task(request, task_id):
     return HttpResponse("Not yet implemented: Edit task")
 
 
-def tags_index(request):
+def tag_list(request):
     tags = get_list_or_404(Tag.objects.all())
     orphaned_tags = []
     used_tags = [tag for tag in tags if tag.tasks.exists() or orphaned_tags.append(tag)]
-    return render(request, 'progress/tags_index.html', {
+    return render(request, 'progress/tag_list.html', {
         'tags': tags,
         'used_tags': used_tags,
         'orphaned_tags': orphaned_tags,
