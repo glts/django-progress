@@ -35,6 +35,12 @@
 				</tr>
 				{% endfor %}
 				<tr>
+					<td colspan="2">
+						<label><input type="radio" name="task_type" value="C" checked="checked"/> Challenge</label>
+						<label><input type="radio" name="task_type" value="R" /> Routine</label>
+					</td>
+				</tr>
+				<tr>
 					<th><label for="id_bulk_portions">Bulk portions:</label></th>
 					<td>
 						<textarea id="id_bulk_portions" name="bulk_portions" rows="20" cols="80"></textarea>

@@ -61,7 +61,7 @@ class Task(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('view_task', args=[self.pk])
+        return reverse('task_detail', args=[self.pk])
 
 
 class Challenge(Task):
