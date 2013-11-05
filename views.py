@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from progress.models import Topic, Task, Challenge, Routine, Portion, Effort, Tag
-from progress.forms import TaskForm, ChallengeForm
+from progress.forms import TaskForm, ChallengeForm, RoutineForm
 
 
 logger = logging.getLogger(__name__)
@@ -121,9 +121,9 @@ class TopicUpdateView(UpdateView):
     model = Topic
 
 
-def view_task(request, task_id):
+def task_detail(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
-    return render(request, 'progress/view_task.html', {'task': task})
+    return render(request, 'progress/task_detail.html', {'task': task})
 
 
 def bulk_lines_to_portions(lines):
@@ -151,30 +151,43 @@ def create_task(request, topic_id):
 
     topic = get_object_or_404(Topic, pk=topic_id)
 
-    # TODO cleanup: this means create challenge not task!
-    task_type = Challenge
-    if request.method == 'POST' and task_type == Challenge:
-        taskform = ChallengeForm(request.POST)
-        bulk_portions = request.POST['bulk_portions']
-        portions = bulk_lines_to_portions(bulk_portions.splitlines())
-        if taskform.is_valid() and portions:
-            challenge = taskform.save(commit=False)
-            challenge.topic = topic
-            challenge.save()
-            for order, portion in enumerate(portions):
-                portion.challenge = challenge
-                portion._order = order
-            Portion.objects.bulk_create(portions)
+    # tricky: the only reason we differentiate between ChallengeForm and
+    # RoutineForm is that we can obtain a Challenge/Routine instance through
+    # the save() method. There's no difference in the template.
+    if request.method == 'POST':
+        task_type = request.POST['task_type']
+        if task_type == 'C':
+            form = ChallengeForm(request.POST)
+        elif task_type == 'R':
+            form = RoutineForm(request.POST)
+        else:
+            return HttpResponseBadRequest()
+        if form.is_valid():
+            if task_type == 'C':
+                bulk_portions = request.POST['bulk_portions']
+                portions = bulk_lines_to_portions(bulk_portions.splitlines())
+                task = form.save(commit=False)
+                task.topic = topic
+                task.save()
+                for order, portion in enumerate(portions):
+                    portion.challenge = task
+                    portion._order = order
+                Portion.objects.bulk_create(portions)
+            else:
+                task = form.save(commit=False)
+                task.topic = topic
+                task.save()
+            return HttpResponseRedirect(task.get_absolute_url())
     else:
-        taskform = ChallengeForm()
+        form = TaskForm()
     return render(request, 'progress/create_task.html', {
         'topic': topic,
         'topic_stats': task_stats_for_topic(topic),
-        'taskform': taskform,
+        'taskform': form,
     })
 
 
-def edit_task(request, task_id):
+def task_edit(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     return HttpResponse("Not yet implemented: Edit task")
 

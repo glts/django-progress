@@ -7,6 +7,21 @@
 	<link rel="stylesheet" type="text/css" href="{% static "progress/base.css" %}" />
 {% endblock %}
 
+{% block scripts %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "progress/jquery-2.0.3.min.js" %}"></script>
+	<script type="text/javascript">
+$(function() {
+	$('#id_task_type_challenge').click(function() {
+		$('#id_bulk_portions_row').show();
+	});
+	$('#id_task_type_routine').click(function() {
+		$('#id_bulk_portions_row').hide();
+	});
+});
+	</script>
+{% endblock %}
+
 {% block header %}
 <div class="title">
 	<h2>Create task</h2>
@@ -36,11 +51,11 @@
 				{% endfor %}
 				<tr>
 					<td colspan="2">
-						<label><input type="radio" name="task_type" value="C" checked="checked"/> Challenge</label>
-						<label><input type="radio" name="task_type" value="R" /> Routine</label>
+						<label id="id_task_type_challenge"><input type="radio" name="task_type" value="C" checked="checked"/> Challenge</label>
+						<label id="id_task_type_routine"><input type="radio" name="task_type" value="R" /> Routine</label>
 					</td>
 				</tr>
-				<tr>
+				<tr id="id_bulk_portions_row">
 					<th><label for="id_bulk_portions">Bulk portions:</label></th>
 					<td>
 						<textarea id="id_bulk_portions" name="bulk_portions" rows="20" cols="80"></textarea>

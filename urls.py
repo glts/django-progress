@@ -12,9 +12,9 @@ urlpatterns = patterns('progress.views',
     url(r'^topics/(?P<pk>\d+)/edit$', views.TopicUpdateView.as_view(), name='topic_edit'),
 
     url(r'^topics/(?P<topic_id>\d+)/tasks/new$', 'create_task', name='create_task'),
-    url(r'^tasks/(?P<task_id>\d+)$', 'view_task', name='view_task'),
-    url(r'^tasks/(?P<task_id>\d+)/edit$', 'edit_task', name='edit_task'),
-    url(r'^tags$', 'tags_index', name='tags_index'),
+    url(r'^tasks/(?P<task_id>\d+)$', 'task_detail', name='task_detail'),
+    url(r'^tasks/(?P<task_id>\d+)/edit$', 'task_edit', name='task_edit'),
+    url(r'^tags$', 'tag_list', name='tag_list'),
 
     # internal
     url(r'^tasks/(?P<task_id>\d+)/portions/(?P<portion_id>\d+)/close$',
