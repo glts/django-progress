@@ -58,7 +58,7 @@
 			{{ topic.stats.done }} done
 		</div>
 		<div class="topic_create_task">
-			<a href="{% url "create_task" topic.topic.pk %}">Create a new task</a>
+			<a href="{% url "task_new" topic.topic.pk %}">Create a new task</a>
 		</div>
 	</div>
 	<div class="tasks">

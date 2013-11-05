@@ -145,9 +145,7 @@ def bulk_lines_to_portions(lines):
 
 # TODO This annotation deprecated in Django 1.6
 @transaction.commit_on_success
-def create_task(request, topic_id):
-
-    # TODO Implement create_task, especially Routine
+def task_new(request, topic_id):
 
     topic = get_object_or_404(Topic, pk=topic_id)
 
@@ -180,7 +178,7 @@ def create_task(request, topic_id):
             return HttpResponseRedirect(task.get_absolute_url())
     else:
         form = TaskForm()
-    return render(request, 'progress/create_task.html', {
+    return render(request, 'progress/task_new.html', {
         'topic': topic,
         'topic_stats': task_stats_for_topic(topic),
         'taskform': form,
