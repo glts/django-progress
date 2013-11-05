@@ -45,20 +45,20 @@ class PortionTest(TestCase):
         topic = Topic.objects.create(title="Vim")
         challenge = Challenge.objects.create(name="Practical Vim",
                 description="Read the book", topic=topic)
-        self.assertFalse(challenge.done)
+        self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
 
         chapter1 = challenge.portions.create(description="Chapter 1")
         chapter2 = challenge.portions.create(description="Chapter 2", done=True)
-        self.assertFalse(challenge.done)
+        self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
 
         chapter1.done = True
         chapter1.save()
-        self.assertTrue(Challenge.objects.get(pk=1).done)   # challenge.done is now stale
+        self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
 
         challenge.portions.create(description="Chapter X", done=True)
         chapter2.done = False
         chapter2.save()
-        self.assertFalse(Challenge.objects.get(pk=1).done)
+        self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
 
         chapter2.delete()
-        self.assertTrue(Challenge.objects.get(pk=1).done)
+        self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
