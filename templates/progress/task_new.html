@@ -45,7 +45,7 @@ $(function() {
 			<table>
 				{% for field in taskform %}
 				<tr>
-					<th>{{ field.label_tag }}:</th>
+					<th>{{ field.label_tag }}</th>
 					<td>{{ field }}{{ field.errors }}</td>
 				</tr>
 				{% endfor %}
