@@ -1,7 +1,15 @@
+import doctest
+
 from django.test import TestCase
 from django.utils import timezone
 
+from . import models
 from .models import Topic, Challenge, Portion
+
+
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(models))
+    return tests
 
 
 class TopicTest(TestCase):
