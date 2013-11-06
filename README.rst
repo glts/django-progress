@@ -10,7 +10,7 @@ Prerequisites
 =============
 
 *  Python 3.3.x
-*  Django 1.5.4
+*  Django 1.6
 *  South 0.8.2 (probably)
 *  Sphinx 1.1.3
 
@@ -21,16 +21,18 @@ I use PostgreSQL with the psycopg driver.
 Quick start
 ===========
 
-1. Add "progress" to your INSTALLED_APPS setting like this::
+1. Add "progress" (and "django.contrib.humanize") to your INSTALLED_APPS
+   setting like this::
 
       INSTALLED_APPS = (
           ...
+          'django.contrib.humanize',
           'progress',
       )
 
 2. Include the progress URLconf in your project urls.py like this::
 
-      url(r'^progress', include('progress.urls')),
+      url(r'^progress/', include('progress.urls')),
 
 3. Run `python manage.py syncdb` to create the progress models.
 
