@@ -10,8 +10,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from progress.models import Topic, Task, Challenge, Routine, Portion, Effort, Tag
-from progress.forms import TaskForm, ChallengeForm, RoutineForm
+from .models import Topic, Task, Challenge, Routine, Portion, Effort, Tag
+from .forms import TaskForm, ChallengeForm, RoutineForm
 
 
 logger = logging.getLogger(__name__)
@@ -114,8 +114,10 @@ def index(request):
 class TopicDetailView(DetailView):
     model = Topic
 
+
 class TopicCreateView(CreateView):
     model = Topic
+
 
 class TopicUpdateView(UpdateView):
     model = Topic
@@ -143,8 +145,7 @@ def bulk_lines_to_portions(lines):
     return portions
 
 
-# TODO This annotation deprecated in Django 1.6
-@transaction.commit_on_success
+@transaction.atomic
 def task_new(request, topic_id):
 
     topic = get_object_or_404(Topic, pk=topic_id)

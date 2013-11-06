@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
-from progress import views
+from . import views
+
 
 urlpatterns = patterns('progress.views',
 

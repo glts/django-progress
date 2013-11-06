@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
-from progress.models import Topic, Challenge, Portion
+
+from .models import Topic, Challenge, Portion
 
 
 class TopicTest(TestCase):
