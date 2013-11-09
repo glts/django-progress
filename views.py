@@ -9,6 +9,7 @@ from django.db.models import Count, Max
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.translation import ugettext as _
 
 from .models import Topic, Task, Challenge, Routine, Portion, Effort, Tag
 from .forms import TaskForm, ChallengeForm, RoutineForm
@@ -188,7 +189,7 @@ def task_new(request, topic_id):
 
 def task_edit(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
-    return HttpResponse("Not yet implemented: Edit task")
+    return HttpResponse(_("Not yet implemented: Edit task"))
 
 
 def tag_list(request):

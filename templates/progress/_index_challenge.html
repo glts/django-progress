@@ -1,3 +1,4 @@
+{% load l10n %}
 {% load humanize %}
 
 <div class="task {% if not challenge.portions.exists %}invalid{% elif challenge.done %}done{% endif %}">
@@ -13,11 +14,11 @@
 		<div class="portions">
 			{% for p in challenge.portions.all %}
 				{% if p.done %}
-				<span class="portion done" title="{{ p.description }}" style="width:{{ p.relative_size }}%">
+				<span class="portion done" title="{{ p.description }}" style="width:{{ p.relative_size|unlocalize }}%">
 					<input type="hidden" name="portion" value="{{ p.pk }}" />
 				</span>
 				{% else %}
-				<span class="portion open" title="{{ p.description }}" style="width:{{ p.relative_size }}%">
+				<span class="portion open" title="{{ p.description }}" style="width:{{ p.relative_size|unlocalize }}%">
 					<input type="hidden" name="portion" value="{{ p.pk }}" />
 				</span>
 				{% endif %}
