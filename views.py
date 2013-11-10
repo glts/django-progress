@@ -9,6 +9,7 @@ from django.db.models import Count, Max
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 
 from .models import Topic, Task, Challenge, Routine, Portion, Effort, Tag
@@ -215,3 +216,19 @@ def close_portion(request, task_id, portion_id):
         return HttpResponseNotAllowed(['POST'])
     done = Challenge.objects.get(pk=portion.challenge.pk).done
     return HttpResponse(json.dumps({'challenge': {'done': done}}), content_type='application/json')
+
+
+def routine_touch(request, task_id):
+    if request.method == 'POST' and request.is_ajax():
+        routine = get_object_or_404(Routine, pk=task_id)
+        effort = Effort.objects.create(routine=routine)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+    return HttpResponse(json.dumps({
+        'routine': {
+            'most_recent_effort': {
+                'id': effort.pk,
+                'date': str(timezone.localtime(effort.date)),
+            },
+        },
+    }), content_type='application/json')

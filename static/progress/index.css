@@ -61,3 +61,8 @@ span.portion.done {
 span.portion.open {
 	background-color: #D3D3D3;
 }
+input.touch_button {
+    border: 1px solid #FFA500;
+    border-radius: 4px 4px 4px 4px;
+    font-size: smaller;
+}

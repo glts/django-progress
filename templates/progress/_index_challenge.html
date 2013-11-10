@@ -2,6 +2,7 @@
 {% load humanize %}
 
 <div class="task {% if not challenge.portions.exists %}invalid{% elif challenge.done %}done{% endif %}">
+	<input type="hidden" name="task" value="{{ challenge.pk }}" />
 	<div class="title">
 		<h3><a href="{{ challenge.get_absolute_url }}">{{ challenge.name }}</a></h3>
 		<span class="updated" title="{{ challenge.updated_date }}">
@@ -9,7 +10,6 @@
 		</span>
 	</div>
 	<span class="taskdescription">{{ challenge.description }}</span>
-	<input type="hidden" name="task" value="{{ challenge.pk }}" />
 	<div class="portion_bar">
 		<div class="portions">
 			{% for p in challenge.portions.all %}

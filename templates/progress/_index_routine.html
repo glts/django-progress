@@ -1,14 +1,15 @@
 {% load humanize %}
 
 <div class="task routine">
+	<input type="hidden" name="task" value="{{ routine.pk }}" />
 	<div class="title">
 		<h3><a href="{{ routine.get_absolute_url }}">{{ routine.name }}</a></h3>
+		<input type="button" class="touch_button" name="touch" value="touch" />
 		<span class="updated" title="{{ routine.updated_date }}">
 			last updated {{ routine.updated_date|naturaltime }}
 		</span>
 	</div>
 	<span class="taskdescription">{{ routine.description }}</span>
-	<input type="hidden" name="task" value="{{ routine.pk }}" />
 	<div class="efforts_bar">
 		Most recent effort {{ routine.efforts.latest.date|naturaltime }}
 	</div>

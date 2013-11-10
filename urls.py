@@ -21,5 +21,7 @@ urlpatterns = patterns('progress.views',
     # internal
     url(r'^tasks/(?P<task_id>\d+)/portions/(?P<portion_id>\d+)/close$',
             'close_portion', name='close_portion'),
+    url(r'^tasks/(?P<task_id>\d+)/efforts/touch$',
+            'routine_touch', name='routine_touch'),
 
 )
