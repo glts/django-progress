@@ -1,0 +1,23 @@
+# Translations for django-progress.
+# glts <676c7473@gmail.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-11-10 20:58+0100\n"
+"PO-Revision-Date: 2013-11-08 10:10+0100\n"
+"Last-Translator: glts <676c7473@gmail.com>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: views.py:195
+msgid "Not yet implemented: Edit task"
+msgstr "Noch nicht implementiert: Aufgabe bearbeiten"
+
+#: templates/base.html:14
+msgctxt "app name"
+msgid "progress"
+msgstr "vorwärts"
