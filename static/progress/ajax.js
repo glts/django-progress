@@ -30,7 +30,7 @@ $(function() {
 
 	$('.touch_button').click(function() {
 		var task_id = $(this).closest('div.task').find('input').first().val();
-		var url = '/progress/tasks/'+task_id+'/efforts/touch';
+		var url = '/progress/tasks/'+task_id+'/touch';
 		$.ajax(url, {
 			type: 'POST',
 			crossDomain: false,
