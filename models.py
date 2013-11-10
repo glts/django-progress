@@ -70,6 +70,12 @@ class Challenge(Task):
 
 
 class Routine(Task):
+    """An ongoing, open-ended routine Task.
+
+    >>> topic = Topic.objects.create(title="Mandarin Chinese")
+    >>> routine = Routine.objects.create(name="Chinese vocab",
+    ...         description="Daily vocab revision", topic=topic)
+    """
     pass
 
 
