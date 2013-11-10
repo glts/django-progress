@@ -170,6 +170,7 @@ def task_new(request, topic_id):
                 task = form.save(commit=False)
                 task.topic = topic
                 task.save()
+                form.save_m2m()
                 for order, portion in enumerate(portions):
                     portion.challenge = task
                     portion._order = order
@@ -178,6 +179,7 @@ def task_new(request, topic_id):
                 task = form.save(commit=False)
                 task.topic = topic
                 task.save()
+                form.save_m2m()
             return HttpResponseRedirect(task.get_absolute_url())
     else:
         form = TaskForm()
