@@ -133,3 +133,7 @@ class Effort(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.routine, self.date)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        Routine.objects.filter(pk=self.routine.pk).update(updated_date=self.date)
