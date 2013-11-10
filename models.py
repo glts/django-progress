@@ -31,7 +31,8 @@ class Topic(models.Model):
 
 
 class Tag(models.Model):
-    """A label for tasks."""
+    """A label for tasks.
+    """
     name = models.CharField(max_length=30)
 
     def __str__(self):
