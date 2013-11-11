@@ -11,7 +11,7 @@ class Topic(models.Model):
     to which tasks are assigned. A Topic could be a foreign language or
     a programming project or a musical instrument.
 
-    >>> topic = Topic(title="Lisp")
+    >>> topic = Topic(title="Concurrency")
     >>> topic.save()
     """
     title = models.CharField(max_length=100)
@@ -66,6 +66,16 @@ class Task(models.Model):
 
 
 class Challenge(Task):
+    """A Task made up of portions that can be worked through to completion.
+
+    >>> topic = Topic.objects.create(title="Lisp")
+    >>> challenge = Challenge.objects.create(name="The little Schemer",
+    ...         description="Read the book by Friedman/Felleisen", topic=topic)
+    >>> challenge.portions.create(description="Chapter 1", size=12)
+    <Portion: The little Schemer [0]>
+    >>> challenge.portions.create(description="Chapter 2", size=18)
+    <Portion: The little Schemer [1]>
+    """
     done = models.BooleanField(editable=False, default=False)
 
 
