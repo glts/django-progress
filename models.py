@@ -42,7 +42,7 @@ class Tag(models.Model):
         if self.pk is None or not Task.objects.filter(tags__in=[self.pk]).exists():
             return Tag.objects.none()
         else:
-            return Tag.objects.filter(tasks__in=self.tasks.all()).exclude(pk=self.pk).distinct()
+            return Tag.objects.filter(task__in=self.tasks.all()).exclude(pk=self.pk).distinct()
 
 
 class Task(models.Model):
@@ -53,10 +53,10 @@ class Task(models.Model):
     """
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
-    topic = models.ForeignKey(Topic, related_name='tasks')
+    topic = models.ForeignKey(Topic, related_name='tasks', related_query_name='task')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(Tag, related_name='tasks')
+    tags = models.ManyToManyField(Tag, related_name='tasks', related_query_name='task')
 
     def __str__(self):
         return self.name
@@ -91,7 +91,7 @@ class Routine(Task):
 
 class Portion(models.Model):
     description = models.CharField(max_length=40)
-    challenge = models.ForeignKey(Challenge, related_name='portions')
+    challenge = models.ForeignKey(Challenge, related_name='portions', related_query_name='portion')
     done = models.BooleanField(default=False)
     done_date = models.DateTimeField(null=True, editable=False)
     size = models.IntegerField(default=1)
@@ -141,7 +141,7 @@ class Effort(models.Model):
     in. The accompanying note is optional.
     """
     note = models.CharField(max_length=200, blank=True)
-    routine = models.ForeignKey(Routine, related_name='efforts')
+    routine = models.ForeignKey(Routine, related_name='efforts', related_query_name='effort')
     date = models.DateTimeField(default=lambda:timezone.now())
 
     class Meta:

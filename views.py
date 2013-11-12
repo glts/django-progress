@@ -44,7 +44,7 @@ def index(request):
     active_topic_ids = Task.objects.all().values('topic')
     idle_topics = Topic.objects.exclude(id__in=active_topic_ids).order_by('-created_date')
     active_topics = Topic.objects.filter(id__in=active_topic_ids) \
-            .annotate(most_recent_update=Max('tasks__updated_date')) \
+            .annotate(most_recent_update=Max('task__updated_date')) \
             .order_by('-most_recent_update')
 
     topics = []
