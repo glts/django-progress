@@ -73,4 +73,20 @@ class PortionTest(TestCase):
         self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
 
     def test_skipped_status(self):
-        pass  # TODO
+        topic = Topic.objects.create(title="Vim")
+        challenge = Challenge.objects.create(name="User manual",
+                description="Read the user manual", topic=topic)
+        usr_30 = challenge.portions.create(description="usr_30.txt", status=Portion.DONE)
+        usr_31 = challenge.portions.create(description="usr_31.txt")
+        self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
+        self.assertFalse(all(portion.finished() for portion in challenge.portions.all()))
+
+        usr_31.status = Portion.SKIPPED
+        usr_31.save()
+        self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
+        self.assertTrue(all(portion.finished() for portion in challenge.portions.all()))
+
+        usr_31.status = Portion.DONE
+        usr_31.save()
+        self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
+        self.assertTrue(all(portion.finished() for portion in challenge.portions.all()))
