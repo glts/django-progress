@@ -90,9 +90,17 @@ class Routine(Task):
 
 
 class Portion(models.Model):
+    OPEN = 'OPEN'
+    DONE = 'DONE'
+    SKIPPED = 'SKIPPED'
+    STATUS_CHOICES = (
+        (OPEN, 'open'),
+        (DONE, 'done'),
+        (SKIPPED, 'skipped'),
+    )
     description = models.CharField(max_length=40)
     challenge = models.ForeignKey(Challenge, related_name='portions', related_query_name='portion')
-    done = models.BooleanField(default=False)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=OPEN)
     done_date = models.DateTimeField(null=True, editable=False)
     size = models.IntegerField(default=1)
 
@@ -105,20 +113,20 @@ class Portion(models.Model):
     def save(self, *args, **kwargs):
         was_done = False
         if self.pk is not None:
-            was_done = Portion.objects.get(pk=self.pk).done
-        if self.done and not was_done:
+            was_done = Portion.objects.get(pk=self.pk).finished()
+        if self.finished() and not was_done:
             self.done_date = timezone.now()
-        elif not self.done and was_done:
+        elif not self.finished() and was_done:
             self.done_date = None
 
         super().save(*args, **kwargs)
 
-        all_done = all(portion.done for portion in self.challenge.portions.all())
+        all_done = all(portion.finished() for portion in self.challenge.portions.all())
         Challenge.objects.filter(pk=self.challenge.pk).update(done=all_done,
                                                               updated_date=timezone.now())
 
     def delete(self, *args, **kwargs):
-        was_done = self.done
+        was_done = self.finished()
         siblings = self.challenge.portions.exclude(pk=self.pk)
 
         super().delete(*args, **kwargs)
@@ -126,8 +134,11 @@ class Portion(models.Model):
         # Update order of following Portions, bypassing Portion.save()
         siblings.filter(_order__gt=self._order).update(_order=F('_order')-1)
 
-        if not was_done and all(portion.done for portion in siblings):
+        if not was_done and all(portion.finished() for portion in siblings):
             Challenge.objects.filter(pk=self.challenge.pk).update(done=True)
+
+    def finished(self):
+        return self.status in (self.DONE, self.SKIPPED)
 
     def relative_size(self):
         total_size = self.challenge.portions.aggregate(Sum('size'))['size__sum']

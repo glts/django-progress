@@ -82,7 +82,7 @@ def index(request):
 
     topic_stats = task_stats_for_topic()
 
-    recent_portions = Portion.objects.filter(done=True).order_by('-done_date')[:5]
+    recent_portions = Portion.objects.filter(status__in=(Portion.DONE, Portion.SKIPPED)).order_by('-done_date')[:5]
     zipped_portions = map(lambda p: (p.done_date, p), recent_portions)
     recent_efforts = Effort.objects.all()[:5]
     zipped_efforts = map(lambda e: (e.date, e), recent_efforts)
@@ -209,8 +209,8 @@ def tag_list(request):
 def close_portion(request, task_id, portion_id):
     if request.method == 'POST' and request.is_ajax():
         portion = get_object_or_404(Portion, pk=portion_id)
-        if portion.challenge.pk == int(task_id) and not portion.done:
-            portion.done = True
+        if portion.challenge.pk == int(task_id) and not portion.finished():
+            portion.status = Portion.DONE
             portion.save()
         else:
             return HttpResponseBadRequest()

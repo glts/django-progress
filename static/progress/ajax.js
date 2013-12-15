@@ -4,7 +4,11 @@ $(function() {
 	$('.portion.done').click(function() {
 		alert("You've already done this. Good job!! ^__^");
 	});
+	$('.portion.skipped').click(function() {
+		alert("You've already skipped this.");
+	});
 
+	// TODO Think about how to select "done" or "skipped" status
 	$('.portion.open').click(function() {
 		var portion_div = $(this)
 		var portion_id = portion_div.find('input').first().val();

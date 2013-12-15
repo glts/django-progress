@@ -13,15 +13,9 @@
 	<div class="portion_bar">
 		<div class="portions">
 			{% for p in challenge.portions.all %}
-				{% if p.done %}
-				<span class="portion done" title="{{ p.description }}" style="width:{{ p.relative_size|unlocalize }}%">
-					<input type="hidden" name="portion" value="{{ p.pk }}" />
-				</span>
-				{% else %}
-				<span class="portion open" title="{{ p.description }}" style="width:{{ p.relative_size|unlocalize }}%">
-					<input type="hidden" name="portion" value="{{ p.pk }}" />
-				</span>
-				{% endif %}
+			<span class="portion {{ p.status|lower }}" title="{{ p.description }}" style="width:{{ p.relative_size|unlocalize }}%">
+				<input type="hidden" name="portion" value="{{ p.pk }}" />
+			</span>
 			{% endfor %}
 		</div>
 	</div>

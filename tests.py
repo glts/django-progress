@@ -39,7 +39,7 @@ class PortionTest(TestCase):
         portion = challenge.portions.create(description="Concept finished")
         self.assertIsNone(portion.done_date)
 
-        portion.done = True
+        portion.status = Portion.DONE
         t_before = timezone.now()
         portion.save()
         t_after = timezone.now()
@@ -57,17 +57,36 @@ class PortionTest(TestCase):
         self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
 
         chapter1 = challenge.portions.create(description="Chapter 1")
-        chapter2 = challenge.portions.create(description="Chapter 2", done=True)
+        chapter2 = challenge.portions.create(description="Chapter 2", status=Portion.DONE)
         self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
 
-        chapter1.done = True
+        chapter1.status = Portion.DONE
         chapter1.save()
         self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
 
-        challenge.portions.create(description="Chapter X", done=True)
-        chapter2.done = False
+        challenge.portions.create(description="Chapter X", status=Portion.DONE)
+        chapter2.status = Portion.OPEN
         chapter2.save()
         self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
 
         chapter2.delete()
         self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
+
+    def test_skipped_status(self):
+        topic = Topic.objects.create(title="Vim")
+        challenge = Challenge.objects.create(name="User manual",
+                description="Read the user manual", topic=topic)
+        usr_30 = challenge.portions.create(description="usr_30.txt", status=Portion.DONE)
+        usr_31 = challenge.portions.create(description="usr_31.txt")
+        self.assertFalse(Challenge.objects.get(pk=challenge.pk).done)
+        self.assertFalse(all(portion.finished() for portion in challenge.portions.all()))
+
+        usr_31.status = Portion.SKIPPED
+        usr_31.save()
+        self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
+        self.assertTrue(all(portion.finished() for portion in challenge.portions.all()))
+
+        usr_31.status = Portion.DONE
+        usr_31.save()
+        self.assertTrue(Challenge.objects.get(pk=challenge.pk).done)
+        self.assertTrue(all(portion.finished() for portion in challenge.portions.all()))
