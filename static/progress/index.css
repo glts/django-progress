@@ -69,3 +69,6 @@ input.touch_button {
     border-radius: 4px 4px 4px 4px;
     font-size: smaller;
 }
+div.enter_effort_bar {
+	display: none;
+}

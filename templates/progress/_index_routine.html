@@ -11,7 +11,15 @@
 	</div>
 	<span class="taskdescription">{{ routine.description }}</span>
 	<div class="efforts_bar">
-		Most recent effort {{ routine.efforts.latest.date|naturaltime }}
+		{% with latest=routine.efforts.latest %}
+			Recent effort
+				{{ latest.date|naturaltime }}{% if latest.note %}: "{{ latest.note }}"{% endif %}
+		{% endwith %}
+		<input type="button" class="enter_effort_button" name="Enter effort" value="Enter effort" />
+		<div class="enter_effort_bar">
+			<input type="text" name="effort_new" value="" />
+			<input type="button" class="submit_effort" name="Submit" value="Submit" />
+		</div>
 	</div>
 	<div class="tags">
 		{% for tag in routine.tags.all %}

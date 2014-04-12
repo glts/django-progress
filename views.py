@@ -234,3 +234,14 @@ def routine_touch(request, task_id):
             },
         },
     }), content_type='application/json')
+
+
+def effort_new(request, task_id):
+    if request.method == 'POST' and request.is_ajax():
+        routine = get_object_or_404(Routine, pk=task_id)
+        note = request.POST['note']
+        effort = Effort.objects.create(routine=routine, note=note)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+    # TODO Add proper response
+    return HttpResponse()

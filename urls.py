@@ -23,5 +23,7 @@ urlpatterns = patterns('progress.views',
             'close_portion', name='close_portion'),
     url(r'^tasks/(?P<task_id>\d+)/touch$',
             'routine_touch', name='routine_touch'),
+    url(r'^tasks/(?P<task_id>\d+)/effort_new$',
+            'effort_new', name='effort_new'),
 
 )
