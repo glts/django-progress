@@ -38,6 +38,7 @@ div.dashboard li {
 div.portion_bar {
 	display: block;
 	width: 96%;
+	height: 1.2em;
 	margin-bottom: 10px;
 }
 div.portions {

@@ -21,9 +21,4 @@
 			<input type="button" class="submit_effort" name="Submit" value="Submit" />
 		</div>
 	</div>
-	<div class="tags">
-		{% for tag in routine.tags.all %}
-		<span class="tag"><a name="{{ tag.name }}" href="">{{ tag.name }}</a></span>
-		{% endfor %}
-	</div>
 </div>

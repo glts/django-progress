@@ -16,8 +16,6 @@ urlpatterns = patterns('progress.views',
     url(r'^tasks/(?P<task_id>\d+)$', 'task_detail', name='task_detail'),
     url(r'^tasks/(?P<task_id>\d+)/edit$', 'task_edit', name='task_edit'),
 
-    url(r'^tags$', 'tag_list', name='tag_list'),
-
     # internal
     url(r'^tasks/(?P<task_id>\d+)/portions/(?P<portion_id>\d+)/close$',
             'close_portion', name='close_portion'),

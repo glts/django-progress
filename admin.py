@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Topic, Challenge, Routine, Portion, Effort, Tag
+from .models import Topic, Challenge, Routine, Portion, Effort
 
 
 class TopicAdmin(admin.ModelAdmin):
@@ -26,11 +26,6 @@ class RoutineAdmin(admin.ModelAdmin):
     inlines = [EffortInline]
 
 
-class TagAdmin(admin.ModelAdmin):
-    model = Tag
-
-
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Challenge, ChallengeAdmin)
 admin.site.register(Routine, RoutineAdmin)
-admin.site.register(Tag, TagAdmin)

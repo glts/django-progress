@@ -12,7 +12,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
-from .models import Topic, Task, Challenge, Routine, Portion, Effort, Tag
+from .models import Topic, Task, Challenge, Routine, Portion, Effort
 from .forms import TaskForm, ChallengeForm, RoutineForm
 
 
@@ -193,17 +193,6 @@ def task_new(request, topic_id):
 def task_edit(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     return HttpResponse(_("Not yet implemented: Edit task"))
-
-
-def tag_list(request):
-    tags = get_list_or_404(Tag.objects.all())
-    orphaned_tags = []
-    used_tags = [tag for tag in tags if tag.tasks.exists() or orphaned_tags.append(tag)]
-    return render(request, 'progress/tag_list.html', {
-        'tags': tags,
-        'used_tags': used_tags,
-        'orphaned_tags': orphaned_tags,
-    })
 
 
 def close_portion(request, task_id, portion_id):

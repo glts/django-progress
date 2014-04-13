@@ -30,21 +30,6 @@ class Topic(models.Model):
             return self.created_date
 
 
-class Tag(models.Model):
-    """A label for tasks.
-    """
-    name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.name
-
-    def related(self):
-        if self.pk is None or not Task.objects.filter(tags__in=[self.pk]).exists():
-            return Tag.objects.none()
-        else:
-            return Tag.objects.filter(task__in=self.tasks.all()).exclude(pk=self.pk).distinct()
-
-
 class Task(models.Model):
     """An item of work, can be either a Challenge or a Routine.
 
@@ -56,7 +41,6 @@ class Task(models.Model):
     topic = models.ForeignKey(Topic, related_name='tasks', related_query_name='task')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(Tag, related_name='tasks', related_query_name='task')
 
     def __str__(self):
         return self.name

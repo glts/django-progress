@@ -17,7 +17,6 @@ Implement asap::
    /topics/new                create a new topic
    /topics/3/tasks/new        create new task
    /tasks/4/edit              edit task
-   /tags                      main tags view
 
 Other to-do items:
 
