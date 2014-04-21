@@ -82,7 +82,7 @@ class Portion(models.Model):
         (DONE, 'done'),
         (SKIPPED, 'skipped'),
     )
-    description = models.CharField(max_length=40)
+    description = models.CharField(max_length=100)
     challenge = models.ForeignKey(Challenge, related_name='portions', related_query_name='portion')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=OPEN)
     done_date = models.DateTimeField(null=True, editable=False)
